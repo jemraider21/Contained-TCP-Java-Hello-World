@@ -12,17 +12,31 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class FlowFileUtils {
+
+    /**
+     * Check if bytes are for a NiFi FlowFile
+     * 
+     * @param data byte[] data to check
+     * @return boolean true if bytes are for a NiFi FlowFile, false otherwise
+     */
     public boolean checkIfBytesAreFlowFile(byte[] data) {
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data)) {
             FlowFileUnpackagerV3 unpackager = new FlowFileUnpackagerV3();
-            unpackager.unpackageFlowFile(byteArrayInputStream, null);
+            unpackager.unpackageFlowFile(byteArrayInputStream, new ByteArrayOutputStream());
             return true;
         } catch (Exception e) {
             System.out.println("Bytes are not for a NiFi FlowFile");
+            System.out.println("Error checking if bytes are for a NiFi FlowFile: " + e.getMessage());
             return false;
         }
     }
 
+    /**
+     * Create a FlowFileDTO object from byte data
+     * 
+     * @param data byte[] data to create FlowFileDTO from
+     * @return FlowFileDTO object created from byte data
+     */
     public FlowFileDTO createFlowFileDTO(byte[] data) {
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
@@ -36,8 +50,14 @@ public class FlowFileUtils {
         }
     }
 
+    /**
+     * Package a FlowFileDTO object into byte data
+     * 
+     * @param flowFile FlowFileDTO object to create byte data from
+     * @return byte[] byte data created from FlowFileDTO object
+     */
     public byte[] createFlowFileBytes(FlowFileDTO flowFile) {
-        try{
+        try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(flowFile.getContent());
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 

@@ -1,8 +1,9 @@
 package org.ozan.consts;
 
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor
+@UtilityClass
 public class DefaultConstants {
-    public static final int CLIENT_PORT = 12345;
+    public final int CLIENT_INPUT_PORT = 12345;
+    public final int CLIENT_OUTPUT_PORT = 12346;
 }
